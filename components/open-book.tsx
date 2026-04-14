@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useCallback, useRef, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import type { Project } from "@/lib/projects"
+import { useState, useCallback, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Project } from "@/lib/projects";
 import {
   Github,
   Linkedin,
@@ -11,26 +11,26 @@ import {
   Code2,
   BookOpen,
   X,
-} from "lucide-react"
+} from "lucide-react";
 
 /* ── Types ─────────────────────────────────────────────────── */
 
 interface OpenBookProps {
-  project: Project
-  currentIndex: number
-  totalProjects: number
-  onClose: () => void
-  onNavigate: (index: number) => void
+  project: Project;
+  currentIndex: number;
+  totalProjects: number;
+  onClose: () => void;
+  onNavigate: (index: number) => void;
 }
 
-type FlipDir = "next" | "prev" | null
+type FlipDir = "next" | "prev" | null;
 
 /* ── Helpers ───────────────────────────────────────────────── */
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 function toRoman(n: number) {
-  return ROMAN[n] ?? String(n + 1)
+  return ROMAN[n] ?? String(n + 1);
 }
 
 function XIcon({ className }: { className?: string }) {
@@ -43,24 +43,24 @@ function XIcon({ className }: { className?: string }) {
     >
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
-  )
+  );
 }
 
 function SocialIcon({ icon }: { icon: "github" | "linkedin" | "email" | "x" }) {
   switch (icon) {
     case "github":
-      return <Github className="h-4 w-4" />
+      return <Github className="h-4 w-4" />;
     case "linkedin":
-      return <Linkedin className="h-4 w-4" />
+      return <Linkedin className="h-4 w-4" />;
     case "email":
-      return <Mail className="h-4 w-4" />
+      return <Mail className="h-4 w-4" />;
     case "x":
-      return <XIcon className="h-4 w-4" />
+      return <XIcon className="h-4 w-4" />;
   }
 }
 
 /* Noise texture inline SVG for paper-grain feel */
-const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`;
 
 /* Deckle edge SVG clipPath */
 function DeckleClipDef() {
@@ -107,7 +107,7 @@ function DeckleClipDef() {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 /* ── Page curl corner (top-right) ──────────────────────────── */
@@ -141,7 +141,7 @@ function PageCurlCorner({ visible }: { visible: boolean }) {
         />
       </svg>
     </motion.div>
-  )
+  );
 }
 
 /* ── Page curl corner (top-left - mirrored) ────────────────── */
@@ -178,7 +178,7 @@ function PageCurlCornerLeft({ visible }: { visible: boolean }) {
         />
       </svg>
     </motion.div>
-  )
+  );
 }
 
 /* ── Flip zone tooltip ─────────────────────────────────────── */
@@ -188,9 +188,9 @@ function FlipTooltip({
   side,
   mouseY,
 }: {
-  label: string
-  side: "left" | "right"
-  mouseY: number
+  label: string;
+  side: "left" | "right";
+  mouseY: number;
 }) {
   return (
     <div
@@ -203,7 +203,7 @@ function FlipTooltip({
     >
       {label}
     </div>
-  )
+  );
 }
 
 /* ── "Finis" end page ──────────────────────────────────────── */
@@ -219,7 +219,7 @@ function FinisContent({ onReturnToShelf }: { onReturnToShelf: () => void }) {
       </div>
 
       <h2 className="mb-3 font-serif text-5xl font-bold italic tracking-tight text-charcoal md:text-6xl">
-        Finis
+        Finished
       </h2>
 
       <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.35em] text-charcoal/40">
@@ -247,7 +247,7 @@ function FinisContent({ onReturnToShelf }: { onReturnToShelf: () => void }) {
         </span>
       </button>
     </div>
-  )
+  );
 }
 
 /* ── Page flip animation variants ──────────────────────────── */
@@ -278,12 +278,12 @@ const pageVariants = {
     opacity: 0,
     transformOrigin: "left center",
   },
-}
+};
 
 const pageTransition = {
   duration: 0.5,
   ease: [0.22, 1, 0.36, 1] as const,
-}
+};
 
 /* ── Main OpenBook component ───────────────────────────────── */
 
@@ -294,86 +294,83 @@ export function OpenBook({
   onClose,
   onNavigate,
 }: OpenBookProps) {
-  const [hoverRight, setHoverRight] = useState(false)
-  const [hoverLeft, setHoverLeft] = useState(false)
-  const [mouseY, setMouseY] = useState(0)
-  const [flipDir, setFlipDir] = useState<FlipDir>(null)
-  const [showFinis, setShowFinis] = useState(false)
-  const bookRef = useRef<HTMLDivElement>(null)
-  const isFlipping = useRef(false)
+  const [hoverRight, setHoverRight] = useState(false);
+  const [hoverLeft, setHoverLeft] = useState(false);
+  const [mouseY, setMouseY] = useState(0);
+  const [flipDir, setFlipDir] = useState<FlipDir>(null);
+  const [showFinis, setShowFinis] = useState(false);
+  const bookRef = useRef<HTMLDivElement>(null);
+  const isFlipping = useRef(false);
 
-  const isFirst = currentIndex === 0
-  const isLast = currentIndex === totalProjects - 1
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === totalProjects - 1;
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!bookRef.current) return
-      const rect = bookRef.current.getBoundingClientRect()
-      setMouseY(e.clientY - rect.top)
-    },
-    []
-  )
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!bookRef.current) return;
+    const rect = bookRef.current.getBoundingClientRect();
+    setMouseY(e.clientY - rect.top);
+  }, []);
 
   const handleFlipNext = useCallback(() => {
-    if (isFlipping.current) return
-    if (showFinis) return
+    if (isFlipping.current) return;
+    if (showFinis) return;
     if (isLast) {
       // Show "Finis" end page
-      isFlipping.current = true
-      setFlipDir("next")
-      setShowFinis(true)
+      isFlipping.current = true;
+      setFlipDir("next");
+      setShowFinis(true);
       setTimeout(() => {
-        isFlipping.current = false
-      }, 550)
-      return
+        isFlipping.current = false;
+      }, 550);
+      return;
     }
-    isFlipping.current = true
-    setFlipDir("next")
+    isFlipping.current = true;
+    setFlipDir("next");
     setTimeout(() => {
-      onNavigate(currentIndex + 1)
-      isFlipping.current = false
-    }, 100)
-  }, [currentIndex, isLast, onNavigate, showFinis])
+      onNavigate(currentIndex + 1);
+      isFlipping.current = false;
+    }, 100);
+  }, [currentIndex, isLast, onNavigate, showFinis]);
 
   const handleFlipPrev = useCallback(() => {
-    if (isFlipping.current) return
+    if (isFlipping.current) return;
     if (showFinis) {
       // Return from Finis to last project
-      isFlipping.current = true
-      setFlipDir("prev")
-      setShowFinis(false)
+      isFlipping.current = true;
+      setFlipDir("prev");
+      setShowFinis(false);
       setTimeout(() => {
-        isFlipping.current = false
-      }, 550)
-      return
+        isFlipping.current = false;
+      }, 550);
+      return;
     }
-    if (isFirst) return
-    isFlipping.current = true
-    setFlipDir("prev")
+    if (isFirst) return;
+    isFlipping.current = true;
+    setFlipDir("prev");
     setTimeout(() => {
-      onNavigate(currentIndex - 1)
-      isFlipping.current = false
-    }, 100)
-  }, [currentIndex, isFirst, onNavigate, showFinis])
+      onNavigate(currentIndex - 1);
+      isFlipping.current = false;
+    }, 100);
+  }, [currentIndex, isFirst, onNavigate, showFinis]);
 
   /* Arrow key navigation */
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "ArrowRight") handleFlipNext()
-      if (e.key === "ArrowLeft") handleFlipPrev()
+      if (e.key === "ArrowRight") handleFlipNext();
+      if (e.key === "ArrowLeft") handleFlipPrev();
     }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [handleFlipNext, handleFlipPrev])
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleFlipNext, handleFlipPrev]);
 
   /* Volume label */
   const volumeLabel = showFinis
     ? `Finis \u00B7 Vol. ${toRoman(totalProjects - 1)} / ${toRoman(totalProjects - 1)}`
-    : `Vol. ${toRoman(currentIndex)} / ${toRoman(totalProjects - 1)}`
+    : `Vol. ${toRoman(currentIndex)} / ${toRoman(totalProjects - 1)}`;
 
   /* Can navigate? */
-  const canGoNext = !showFinis || false
-  const canGoPrev = !isFirst || showFinis
+  const canGoNext = !showFinis || false;
+  const canGoPrev = !isFirst || showFinis;
 
   return (
     <>
@@ -469,7 +466,13 @@ export function OpenBook({
               key={project.id}
               className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto md:flex-row md:overflow-hidden"
               variants={pageVariants}
-              initial={flipDir === "next" ? "enterFromRight" : flipDir === "prev" ? "enterFromLeft" : "center"}
+              initial={
+                flipDir === "next"
+                  ? "enterFromRight"
+                  : flipDir === "prev"
+                    ? "enterFromLeft"
+                    : "center"
+              }
               animate="center"
               exit={flipDir === "next" ? "exitToLeft" : "exitToRight"}
               transition={pageTransition}
@@ -680,7 +683,7 @@ export function OpenBook({
             tabIndex={0}
             aria-label="Previous project"
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") handleFlipPrev()
+              if (e.key === "Enter" || e.key === " ") handleFlipPrev();
             }}
           >
             <PageCurlCornerLeft visible={hoverLeft} />
@@ -706,7 +709,7 @@ export function OpenBook({
             tabIndex={0}
             aria-label="Next project"
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") handleFlipNext()
+              if (e.key === "Enter" || e.key === " ") handleFlipNext();
             }}
           >
             <PageCurlCorner visible={hoverRight} />
@@ -749,5 +752,5 @@ export function OpenBook({
         </div>
       </motion.div>
     </>
-  )
+  );
 }
