@@ -43,7 +43,7 @@ export const projects: Project[] = [
     sourceLink: "#",
     isAwardWinner: false,
     isAbout: true,
-    bio: "I build things for the web with the same care a bookbinder gives to a first edition. Every pixel, every interaction, every line of code is a deliberate choice in the story I'm telling. Behind each book is a messy first draft - I debug that mess until the story holds.",
+    bio: "I build things for the web with the same care a bookbinder gives to a first edition. Every pixel, every interaction, every line of code is a deliberate choice in the story I'm telling.Behind each book is a messy first draft - I debug that mess until the story holds.",
     socials: [
       { label: "GitHub", href: "https://github.com/Messibre", icon: "github" },
       {
