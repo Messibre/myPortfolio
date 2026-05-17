@@ -635,7 +635,7 @@ export function OpenBook({
                       <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/50">
                         The Narrative
                       </p>
-                      <p className="mb-8 font-serif text-xs leading-relaxed text-charcoal/85 md:text-sm">
+                      <p className="mb-8 font-serif text-sm leading-relaxed text-charcoal/85 md:text-base">
                         {project.narrative}
                       </p>
                     </>
